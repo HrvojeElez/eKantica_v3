@@ -1,6 +1,17 @@
 # Preddiplomski projekt, [Džapini anđeli](https://www.youtube.com/watch?v=dQw4w9WgXcQ) - STM32
-Ovo je repozitorij za dio projekta koji se tiče STM32. <br>
-Link na repozitorij za web stranicu: <i> Ovdje se unosi link </i>
+
+TREBA DODATI PUMPU
+
+Koristio sam MakeFile. Spojeni su svi senzori osim pumpe. 
+Ako se mijenja duljina timera2 treba se promijeniti konstatna u callback funkciji u tim.c
+
+Upute za flash :
+Prvo se pokrene make naredba
+Nakon toga u istom direkotoriju /usr/local/bin/st-flash --reset --flash=256k write build/dream-team-projekt-stm32.bin 0x8000000
+
+Moze se i preko CubeIDE, ali onda se mora otvoriti ioc file.
+
+
 
 ## Upute za koristenje BME280 drivera
 
