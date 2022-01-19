@@ -1,0 +1,768 @@
+ARM GAS  /tmp/ccvAuu44.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"wifi.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.rodata.WIFI_Init.str1.4,"aMS",%progbits,1
+  18              		.align	2
+  19              	.LC0:
+  20 0000 41544530 		.ascii	"ATE0\015\012\000"
+  20      0D0A00
+  21 0007 00       		.align	2
+  22              	.LC1:
+  23 0008 4552524F 		.ascii	"ERROR\015\012\000"
+  23      520D0A00 
+  24              		.align	2
+  25              	.LC2:
+  26 0010 4F4B0D0A 		.ascii	"OK\015\012\000"
+  26      00
+  27 0015 000000   		.align	2
+  28              	.LC3:
+  29 0018 41542B43 		.ascii	"AT+CWMODE=1\015\012\000"
+  29      574D4F44 
+  29      453D310D 
+  29      0A00
+  30 0026 0000     		.align	2
+  31              	.LC4:
+  32 0028 41542B43 		.ascii	"AT+CWJAP=\"%s\",\"%s\"\015\012\000"
+  32      574A4150 
+  32      3D222573 
+  32      222C2225 
+  32      73220D0A 
+  33 003d 000000   		.align	2
+  34              	.LC5:
+  35 0040 4641494C 		.ascii	"FAIL\015\012\000"
+  35      0D0A00
+  36              		.section	.text.WIFI_Init,"ax",%progbits
+  37              		.align	1
+  38              		.global	WIFI_Init
+  39              		.arch armv7e-m
+  40              		.syntax unified
+  41              		.thumb
+  42              		.thumb_func
+  43              		.fpu fpv4-sp-d16
+  45              	WIFI_Init:
+  46              	.LVL0:
+  47              	.LFB238:
+ARM GAS  /tmp/ccvAuu44.s 			page 2
+
+
+  48              		.file 1 "Core/Src/wifi.c"
+   1:Core/Src/wifi.c **** 
+   2:Core/Src/wifi.c **** #include "wifi.h"
+   3:Core/Src/wifi.c **** #include <string.h>
+   4:Core/Src/wifi.c **** 
+   5:Core/Src/wifi.c **** 
+   6:Core/Src/wifi.c **** int8_t WIFI_Init(char *ssid, char *pwd) {
+  49              		.loc 1 6 41 view -0
+  50              		.cfi_startproc
+  51              		@ args = 0, pretend = 0, frame = 0
+  52              		@ frame_needed = 1, uses_anonymous_args = 0
+  53              		.loc 1 6 41 is_stmt 0 view .LVU1
+  54 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+  55              	.LCFI0:
+  56              		.cfi_def_cfa_offset 24
+  57              		.cfi_offset 3, -24
+  58              		.cfi_offset 4, -20
+  59              		.cfi_offset 5, -16
+  60              		.cfi_offset 6, -12
+  61              		.cfi_offset 7, -8
+  62              		.cfi_offset 14, -4
+  63 0002 00AF     		add	r7, sp, #0
+  64              	.LCFI1:
+  65              		.cfi_def_cfa_register 7
+  66 0004 0546     		mov	r5, r0
+  67 0006 0E46     		mov	r6, r1
+   7:Core/Src/wifi.c **** 	USART1_ClearBuffer();
+  68              		.loc 1 7 2 is_stmt 1 view .LVU2
+  69 0008 FFF7FEFF 		bl	USART1_ClearBuffer
+  70              	.LVL1:
+   8:Core/Src/wifi.c **** 
+   9:Core/Src/wifi.c **** 	// reset ESP modula - uglavnom nije potreban, ali ako bude potrebe,
+  10:Core/Src/wifi.c **** 	// otkomentiraj sljedece linije:
+  11:Core/Src/wifi.c **** 
+  12:Core/Src/wifi.c **** 	// USART1_SendString("AT+RST\r\n", (uint16_t) strlen("AT+RST\r\n"));
+  13:Core/Src/wifi.c **** 	// HAL_Delay(7000);
+  14:Core/Src/wifi.c **** 	// USART1_ClearBuffer();
+  15:Core/Src/wifi.c **** 
+  16:Core/Src/wifi.c **** 	// iskljuci echo (radi lakseg debugginga)
+  17:Core/Src/wifi.c **** 	USART1_SendString("ATE0\r\n", (uint16_t) strlen("ATE0\r\n"));
+  71              		.loc 1 17 2 view .LVU3
+  72 000c 0621     		movs	r1, #6
+  73 000e 2948     		ldr	r0, .L10
+  74 0010 FFF7FEFF 		bl	USART1_SendString
+  75              	.LVL2:
+  18:Core/Src/wifi.c **** 
+  19:Core/Src/wifi.c **** 	if (USART1_WaitFor("OK\r\n", "ERROR\r\n", 5000) == -1) {
+  76              		.loc 1 19 2 view .LVU4
+  77              		.loc 1 19 6 is_stmt 0 view .LVU5
+  78 0014 41F28832 		movw	r2, #5000
+  79 0018 2749     		ldr	r1, .L10+4
+  80 001a 2848     		ldr	r0, .L10+8
+  81 001c FFF7FEFF 		bl	USART1_WaitFor
+  82              	.LVL3:
+  83              		.loc 1 19 5 view .LVU6
+  84 0020 B0F1FF3F 		cmp	r0, #-1
+  85 0024 3BD0     		beq	.L7
+ARM GAS  /tmp/ccvAuu44.s 			page 3
+
+
+  20:Core/Src/wifi.c **** 		USART1_ClearBuffer();
+  21:Core/Src/wifi.c **** 
+  22:Core/Src/wifi.c **** 		return -1;
+  23:Core/Src/wifi.c **** 	}
+  24:Core/Src/wifi.c **** 	USART1_ClearBuffer();
+  86              		.loc 1 24 2 is_stmt 1 view .LVU7
+  87 0026 FFF7FEFF 		bl	USART1_ClearBuffer
+  88              	.LVL4:
+  25:Core/Src/wifi.c **** 
+  26:Core/Src/wifi.c **** 	// postavi Station mod
+  27:Core/Src/wifi.c **** 	USART1_SendString("AT+CWMODE=1\r\n", (uint16_t) strlen("AT+CWMODE=1\r\n"));
+  89              		.loc 1 27 2 view .LVU8
+  90 002a 0D21     		movs	r1, #13
+  91 002c 2448     		ldr	r0, .L10+12
+  92 002e FFF7FEFF 		bl	USART1_SendString
+  93              	.LVL5:
+  28:Core/Src/wifi.c **** 
+  29:Core/Src/wifi.c **** 	if (USART1_WaitFor("OK\r\n", "ERROR\r\n", 1000) == -1) {
+  94              		.loc 1 29 2 view .LVU9
+  95              		.loc 1 29 6 is_stmt 0 view .LVU10
+  96 0032 4FF47A72 		mov	r2, #1000
+  97 0036 2049     		ldr	r1, .L10+4
+  98 0038 2048     		ldr	r0, .L10+8
+  99 003a FFF7FEFF 		bl	USART1_WaitFor
+ 100              	.LVL6:
+ 101 003e 0446     		mov	r4, r0
+ 102              		.loc 1 29 5 view .LVU11
+ 103 0040 B0F1FF3F 		cmp	r0, #-1
+ 104 0044 2FD0     		beq	.L8
+  30:Core/Src/wifi.c **** 		USART1_ClearBuffer();
+  31:Core/Src/wifi.c **** 
+  32:Core/Src/wifi.c **** 		return -1;
+  33:Core/Src/wifi.c **** 	}
+  34:Core/Src/wifi.c **** 	USART1_ClearBuffer();
+ 105              		.loc 1 34 2 is_stmt 1 view .LVU12
+ 106 0046 FFF7FEFF 		bl	USART1_ClearBuffer
+ 107              	.LVL7:
+  35:Core/Src/wifi.c **** 
+  36:Core/Src/wifi.c **** 	// spoji se na mrezu
+  37:Core/Src/wifi.c **** 	char cwjap_cmd[strlen(ssid) + strlen(pwd) + 17];
+ 108              		.loc 1 37 2 view .LVU13
+ 109              		.loc 1 37 17 is_stmt 0 view .LVU14
+ 110 004a 2846     		mov	r0, r5
+ 111 004c FFF7FEFF 		bl	strlen
+ 112              	.LVL8:
+ 113 0050 0446     		mov	r4, r0
+ 114              		.loc 1 37 32 view .LVU15
+ 115 0052 3046     		mov	r0, r6
+ 116 0054 FFF7FEFF 		bl	strlen
+ 117              	.LVL9:
+ 118              		.loc 1 37 30 view .LVU16
+ 119 0058 0444     		add	r4, r4, r0
+ 120              	.LVL10:
+ 121              		.loc 1 37 7 view .LVU17
+ 122 005a 1834     		adds	r4, r4, #24
+ 123              	.LVL11:
+ 124              		.loc 1 37 7 view .LVU18
+ARM GAS  /tmp/ccvAuu44.s 			page 4
+
+
+ 125 005c 24F00704 		bic	r4, r4, #7
+ 126              	.LVL12:
+ 127              		.loc 1 37 7 view .LVU19
+ 128 0060 ADEB040D 		sub	sp, sp, r4
+ 129              	.LVL13:
+  38:Core/Src/wifi.c **** 	sprintf(cwjap_cmd, "AT+CWJAP=\"%s\",\"%s\"\r\n", ssid, pwd);
+ 130              		.loc 1 38 2 is_stmt 1 view .LVU20
+ 131 0064 3346     		mov	r3, r6
+ 132 0066 2A46     		mov	r2, r5
+ 133 0068 1649     		ldr	r1, .L10+16
+ 134 006a 6846     		mov	r0, sp
+ 135 006c FFF7FEFF 		bl	sprintf
+ 136              	.LVL14:
+  39:Core/Src/wifi.c **** 	USART1_SendString(cwjap_cmd, (uint16_t) strlen(cwjap_cmd));
+ 137              		.loc 1 39 2 view .LVU21
+ 138              		.loc 1 39 42 is_stmt 0 view .LVU22
+ 139 0070 6846     		mov	r0, sp
+ 140 0072 FFF7FEFF 		bl	strlen
+ 141              	.LVL15:
+ 142              		.loc 1 39 2 view .LVU23
+ 143 0076 81B2     		uxth	r1, r0
+ 144 0078 6846     		mov	r0, sp
+ 145 007a FFF7FEFF 		bl	USART1_SendString
+ 146              	.LVL16:
+  40:Core/Src/wifi.c **** 
+  41:Core/Src/wifi.c **** 	if (USART1_WaitFor("OK\r\n", "FAIL\r\n", 10000) == -1) {
+ 147              		.loc 1 41 2 is_stmt 1 view .LVU24
+ 148              		.loc 1 41 6 is_stmt 0 view .LVU25
+ 149 007e 42F21072 		movw	r2, #10000
+ 150 0082 1149     		ldr	r1, .L10+20
+ 151 0084 0D48     		ldr	r0, .L10+8
+ 152 0086 FFF7FEFF 		bl	USART1_WaitFor
+ 153              	.LVL17:
+ 154 008a 0446     		mov	r4, r0
+ 155              		.loc 1 41 5 view .LVU26
+ 156 008c B0F1FF3F 		cmp	r0, #-1
+ 157 0090 0CD0     		beq	.L9
+  42:Core/Src/wifi.c **** 		USART1_ClearBuffer();
+  43:Core/Src/wifi.c **** 		return -1;
+  44:Core/Src/wifi.c **** 	}
+  45:Core/Src/wifi.c **** 	USART1_ClearBuffer();
+ 158              		.loc 1 45 2 is_stmt 1 view .LVU27
+ 159 0092 FFF7FEFF 		bl	USART1_ClearBuffer
+ 160              	.LVL18:
+  46:Core/Src/wifi.c **** 
+  47:Core/Src/wifi.c **** 	return 0;
+ 161              		.loc 1 47 2 view .LVU28
+ 162              		.loc 1 47 9 is_stmt 0 view .LVU29
+ 163 0096 0024     		movs	r4, #0
+ 164              	.LVL19:
+ 165              	.L3:
+  48:Core/Src/wifi.c **** 
+  49:Core/Src/wifi.c **** }
+ 166              		.loc 1 49 1 view .LVU30
+ 167 0098 2046     		mov	r0, r4
+ 168 009a BD46     		mov	sp, r7
+ 169              	.LCFI2:
+ARM GAS  /tmp/ccvAuu44.s 			page 5
+
+
+ 170              		.cfi_remember_state
+ 171              		.cfi_def_cfa_register 13
+ 172              		@ sp needed
+ 173 009c F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 174              	.LVL20:
+ 175              	.L7:
+ 176              	.LCFI3:
+ 177              		.cfi_restore_state
+ 178              		.loc 1 49 1 view .LVU31
+ 179 009e 0446     		mov	r4, r0
+  20:Core/Src/wifi.c **** 
+ 180              		.loc 1 20 3 is_stmt 1 view .LVU32
+ 181 00a0 FFF7FEFF 		bl	USART1_ClearBuffer
+ 182              	.LVL21:
+  22:Core/Src/wifi.c **** 	}
+ 183              		.loc 1 22 3 view .LVU33
+  22:Core/Src/wifi.c **** 	}
+ 184              		.loc 1 22 10 is_stmt 0 view .LVU34
+ 185 00a4 F8E7     		b	.L3
+ 186              	.L8:
+  30:Core/Src/wifi.c **** 
+ 187              		.loc 1 30 3 is_stmt 1 view .LVU35
+ 188 00a6 FFF7FEFF 		bl	USART1_ClearBuffer
+ 189              	.LVL22:
+  32:Core/Src/wifi.c **** 	}
+ 190              		.loc 1 32 3 view .LVU36
+  32:Core/Src/wifi.c **** 	}
+ 191              		.loc 1 32 10 is_stmt 0 view .LVU37
+ 192 00aa F5E7     		b	.L3
+ 193              	.LVL23:
+ 194              	.L9:
+  42:Core/Src/wifi.c **** 		return -1;
+ 195              		.loc 1 42 3 is_stmt 1 view .LVU38
+ 196 00ac FFF7FEFF 		bl	USART1_ClearBuffer
+ 197              	.LVL24:
+  43:Core/Src/wifi.c **** 	}
+ 198              		.loc 1 43 3 view .LVU39
+  43:Core/Src/wifi.c **** 	}
+ 199              		.loc 1 43 10 is_stmt 0 view .LVU40
+ 200 00b0 F2E7     		b	.L3
+ 201              	.L11:
+ 202 00b2 00BF     		.align	2
+ 203              	.L10:
+ 204 00b4 00000000 		.word	.LC0
+ 205 00b8 08000000 		.word	.LC1
+ 206 00bc 10000000 		.word	.LC2
+ 207 00c0 18000000 		.word	.LC3
+ 208 00c4 28000000 		.word	.LC4
+ 209 00c8 40000000 		.word	.LC5
+ 210              		.cfi_endproc
+ 211              	.LFE238:
+ 213              		.section	.rodata.WIFI_SendRequestWithParams.str1.4,"aMS",%progbits,1
+ 214              		.align	2
+ 215              	.LC6:
+ 216 0000 41542B43 		.ascii	"AT+CIPSTART=\"TCP\",\"%s\",80\015\012\000"
+ 216      49505354 
+ 216      4152543D 
+ARM GAS  /tmp/ccvAuu44.s 			page 6
+
+
+ 216      22544350 
+ 216      222C2225 
+ 217              		.global	__aeabi_d2uiz
+ 218              		.align	2
+ 219              	.LC7:
+ 220 001c 47455420 		.ascii	"GET %s?instant_temperature=%d&instant_moisture=%d&i"
+ 220      25733F69 
+ 220      6E737461 
+ 220      6E745F74 
+ 220      656D7065 
+ 221 004f 6E737461 		.ascii	"nstant_humidity=%d&instant_water=%d HTTP/1.1\015\012"
+ 221      6E745F68 
+ 221      756D6964 
+ 221      6974793D 
+ 221      25642669 
+ 222 007d 486F7374 		.ascii	"Host: %s\015\012\015\012\000"
+ 222      3A202573 
+ 222      0D0A0D0A 
+ 222      00
+ 223 008a 0000     		.align	2
+ 224              	.LC8:
+ 225 008c 41542B43 		.ascii	"AT+CIPSEND=%d\015\012\000"
+ 225      49505345 
+ 225      4E443D25 
+ 225      640D0A00 
+ 226              		.section	.text.WIFI_SendRequestWithParams,"ax",%progbits
+ 227              		.align	1
+ 228              		.global	WIFI_SendRequestWithParams
+ 229              		.syntax unified
+ 230              		.thumb
+ 231              		.thumb_func
+ 232              		.fpu fpv4-sp-d16
+ 234              	WIFI_SendRequestWithParams:
+ 235              	.LVL25:
+ 236              	.LFB239:
+  50:Core/Src/wifi.c **** 
+  51:Core/Src/wifi.c **** int8_t WIFI_SendRequestWithParams(char *hostname, char *path, double temp, double moisture, double 
+ 237              		.loc 1 51 129 is_stmt 1 view -0
+ 238              		.cfi_startproc
+ 239              		@ args = 0, pretend = 0, frame = 48
+ 240              		@ frame_needed = 1, uses_anonymous_args = 0
+ 241              		.loc 1 51 129 is_stmt 0 view .LVU42
+ 242 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 243              	.LCFI4:
+ 244              		.cfi_def_cfa_offset 36
+ 245              		.cfi_offset 4, -36
+ 246              		.cfi_offset 5, -32
+ 247              		.cfi_offset 6, -28
+ 248              		.cfi_offset 7, -24
+ 249              		.cfi_offset 8, -20
+ 250              		.cfi_offset 9, -16
+ 251              		.cfi_offset 10, -12
+ 252              		.cfi_offset 11, -8
+ 253              		.cfi_offset 14, -4
+ 254 0004 91B0     		sub	sp, sp, #68
+ 255              	.LCFI5:
+ 256              		.cfi_def_cfa_offset 104
+ARM GAS  /tmp/ccvAuu44.s 			page 7
+
+
+ 257 0006 04AF     		add	r7, sp, #16
+ 258              	.LCFI6:
+ 259              		.cfi_def_cfa 7, 88
+ 260 0008 0646     		mov	r6, r0
+ 261 000a 8B46     		mov	fp, r1
+ 262 000c 59EC108B 		vmov	r8, r9, d0
+ 263 0010 87ED041B 		vstr.64	d1, [r7, #16]
+ 264 0014 87ED022B 		vstr.64	d2, [r7, #8]
+ 265 0018 87ED003B 		vstr.64	d3, [r7]
+  52:Core/Src/wifi.c **** 	USART1_ClearBuffer();
+ 266              		.loc 1 52 2 is_stmt 1 view .LVU43
+ 267 001c FFF7FEFF 		bl	USART1_ClearBuffer
+ 268              	.LVL26:
+  53:Core/Src/wifi.c **** 
+  54:Core/Src/wifi.c **** 	char cipstart_cmd[strlen(hostname) + 26];
+ 269              		.loc 1 54 2 view .LVU44
+ 270              		.loc 1 54 20 is_stmt 0 view .LVU45
+ 271 0020 3046     		mov	r0, r6
+ 272 0022 FFF7FEFF 		bl	strlen
+ 273              	.LVL27:
+ 274              		.loc 1 54 7 view .LVU46
+ 275 0026 2130     		adds	r0, r0, #33
+ 276              	.LVL28:
+ 277              		.loc 1 54 7 view .LVU47
+ 278 0028 20F00700 		bic	r0, r0, #7
+ 279              	.LVL29:
+ 280              		.loc 1 54 7 view .LVU48
+ 281 002c ADEB000D 		sub	sp, sp, r0
+ 282              	.LVL30:
+ 283              		.loc 1 54 7 view .LVU49
+ 284 0030 04AC     		add	r4, sp, #16
+ 285              	.LVL31:
+  55:Core/Src/wifi.c **** 	sprintf(cipstart_cmd, "AT+CIPSTART=\"TCP\",\"%s\",80\r\n", hostname);
+ 286              		.loc 1 55 2 is_stmt 1 view .LVU50
+ 287 0032 3246     		mov	r2, r6
+ 288 0034 4B49     		ldr	r1, .L23
+ 289 0036 2046     		mov	r0, r4
+ 290 0038 FFF7FEFF 		bl	sprintf
+ 291              	.LVL32:
+  56:Core/Src/wifi.c **** 
+  57:Core/Src/wifi.c **** 	USART1_SendString(cipstart_cmd, (uint16_t) strlen(cipstart_cmd));
+ 292              		.loc 1 57 2 view .LVU51
+ 293              		.loc 1 57 45 is_stmt 0 view .LVU52
+ 294 003c 2046     		mov	r0, r4
+ 295 003e FFF7FEFF 		bl	strlen
+ 296              	.LVL33:
+ 297              		.loc 1 57 2 view .LVU53
+ 298 0042 81B2     		uxth	r1, r0
+ 299 0044 2046     		mov	r0, r4
+ 300 0046 FFF7FEFF 		bl	USART1_SendString
+ 301              	.LVL34:
+  58:Core/Src/wifi.c **** 
+  59:Core/Src/wifi.c **** 	if (USART1_WaitFor("OK\r\n", "ERROR\r\n", 1000) == -1) {
+ 302              		.loc 1 59 2 is_stmt 1 view .LVU54
+ 303              		.loc 1 59 6 is_stmt 0 view .LVU55
+ 304 004a 4FF47A72 		mov	r2, #1000
+ 305 004e 4649     		ldr	r1, .L23+4
+ARM GAS  /tmp/ccvAuu44.s 			page 8
+
+
+ 306 0050 4648     		ldr	r0, .L23+8
+ 307 0052 FFF7FEFF 		bl	USART1_WaitFor
+ 308              	.LVL35:
+ 309              		.loc 1 59 5 view .LVU56
+ 310 0056 B0F1FF3F 		cmp	r0, #-1
+ 311 005a 13D0     		beq	.L20
+  60:Core/Src/wifi.c **** 		USART1_ClearBuffer();
+  61:Core/Src/wifi.c **** 
+  62:Core/Src/wifi.c **** 		return -1;
+  63:Core/Src/wifi.c **** 	}
+  64:Core/Src/wifi.c **** 	USART1_ClearBuffer();
+ 312              		.loc 1 64 2 is_stmt 1 view .LVU57
+ 313 005c FFF7FEFF 		bl	USART1_ClearBuffer
+ 314              	.LVL36:
+  65:Core/Src/wifi.c **** 
+  66:Core/Src/wifi.c **** 	char req[strlen(path) + strlen(hostname) + 4 * 2 + strlen("GET ?instant_temperature=&instant_moist
+ 315              		.loc 1 66 2 view .LVU58
+ 316              		.loc 1 66 11 is_stmt 0 view .LVU59
+ 317 0060 5846     		mov	r0, fp
+ 318 0062 FFF7FEFF 		bl	strlen
+ 319              	.LVL37:
+ 320 0066 0446     		mov	r4, r0
+ 321              	.LVL38:
+ 322              		.loc 1 66 26 view .LVU60
+ 323 0068 3046     		mov	r0, r6
+ 324 006a FFF7FEFF 		bl	strlen
+ 325              	.LVL39:
+ 326              		.loc 1 66 24 view .LVU61
+ 327 006e 0444     		add	r4, r4, r0
+ 328              	.LVL40:
+ 329              		.loc 1 66 7 view .LVU62
+ 330 0070 7034     		adds	r4, r4, #112
+ 331              	.LVL41:
+ 332              		.loc 1 66 7 view .LVU63
+ 333 0072 24F00704 		bic	r4, r4, #7
+ 334              	.LVL42:
+ 335              		.loc 1 66 7 view .LVU64
+ 336 0076 ADEB040D 		sub	sp, sp, r4
+ 337              	.LVL43:
+ 338              		.loc 1 66 7 view .LVU65
+ 339 007a 0DF1100A 		add	r10, sp, #16
+ 340 007e 5546     		mov	r5, r10
+ 341              	.LVL44:
+  67:Core/Src/wifi.c **** 	for(int i = 0; i < strlen(req); i++)
+ 342              		.loc 1 67 2 is_stmt 1 view .LVU66
+ 343              	.LBB2:
+ 344              		.loc 1 67 6 view .LVU67
+ 345              		.loc 1 67 10 is_stmt 0 view .LVU68
+ 346 0080 0024     		movs	r4, #0
+ 347              		.loc 1 67 2 view .LVU69
+ 348 0082 06E0     		b	.L15
+ 349              	.LVL45:
+ 350              	.L20:
+ 351              		.loc 1 67 2 view .LVU70
+ 352 0084 0446     		mov	r4, r0
+ 353              	.LVL46:
+ 354              		.loc 1 67 2 view .LVU71
+ARM GAS  /tmp/ccvAuu44.s 			page 9
+
+
+ 355              	.LBE2:
+  60:Core/Src/wifi.c **** 		USART1_ClearBuffer();
+ 356              		.loc 1 60 3 is_stmt 1 view .LVU72
+ 357 0086 FFF7FEFF 		bl	USART1_ClearBuffer
+ 358              	.LVL47:
+  62:Core/Src/wifi.c **** 	}
+ 359              		.loc 1 62 3 view .LVU73
+  62:Core/Src/wifi.c **** 	}
+ 360              		.loc 1 62 10 is_stmt 0 view .LVU74
+ 361 008a 60E0     		b	.L14
+ 362              	.LVL48:
+ 363              	.L16:
+ 364              	.LBB3:
+  68:Core/Src/wifi.c **** 	{
+  69:Core/Src/wifi.c **** 		req[i] = '\0';
+ 365              		.loc 1 69 3 is_stmt 1 discriminator 3 view .LVU75
+ 366              		.loc 1 69 10 is_stmt 0 discriminator 3 view .LVU76
+ 367 008c 0023     		movs	r3, #0
+ 368 008e 2B55     		strb	r3, [r5, r4]
+  67:Core/Src/wifi.c **** 	{
+ 369              		.loc 1 67 34 is_stmt 1 discriminator 3 view .LVU77
+  67:Core/Src/wifi.c **** 	{
+ 370              		.loc 1 67 35 is_stmt 0 discriminator 3 view .LVU78
+ 371 0090 0134     		adds	r4, r4, #1
+ 372              	.LVL49:
+ 373              	.L15:
+  67:Core/Src/wifi.c **** 	{
+ 374              		.loc 1 67 17 is_stmt 1 discriminator 1 view .LVU79
+  67:Core/Src/wifi.c **** 	{
+ 375              		.loc 1 67 21 is_stmt 0 discriminator 1 view .LVU80
+ 376 0092 2846     		mov	r0, r5
+ 377 0094 FFF7FEFF 		bl	strlen
+ 378              	.LVL50:
+  67:Core/Src/wifi.c **** 	{
+ 379              		.loc 1 67 2 discriminator 1 view .LVU81
+ 380 0098 A042     		cmp	r0, r4
+ 381 009a F7D8     		bhi	.L16
+ 382              	.LBE3:
+  70:Core/Src/wifi.c **** 	}
+  71:Core/Src/wifi.c **** 	uint16_t temp_d = (uint16_t) temp;
+ 383              		.loc 1 71 2 is_stmt 1 view .LVU82
+ 384              		.loc 1 71 11 is_stmt 0 view .LVU83
+ 385 009c 4046     		mov	r0, r8
+ 386 009e 4946     		mov	r1, r9
+ 387 00a0 FFF7FEFF 		bl	__aeabi_d2uiz
+ 388              	.LVL51:
+ 389 00a4 84B2     		uxth	r4, r0
+ 390              	.LVL52:
+  72:Core/Src/wifi.c **** 	uint16_t moisture_d = (uint16_t) moisture;
+ 391              		.loc 1 72 2 is_stmt 1 view .LVU84
+ 392              		.loc 1 72 11 is_stmt 0 view .LVU85
+ 393 00a6 D7E90401 		ldrd	r0, [r7, #16]
+ 394 00aa FFF7FEFF 		bl	__aeabi_d2uiz
+ 395              	.LVL53:
+ 396 00ae 85B2     		uxth	r5, r0
+ 397              	.LVL54:
+  73:Core/Src/wifi.c **** 	uint16_t humidity_d = (uint16_t) humidity;
+ARM GAS  /tmp/ccvAuu44.s 			page 10
+
+
+ 398              		.loc 1 73 2 is_stmt 1 view .LVU86
+ 399              		.loc 1 73 11 is_stmt 0 view .LVU87
+ 400 00b0 D7E90201 		ldrd	r0, [r7, #8]
+ 401 00b4 FFF7FEFF 		bl	__aeabi_d2uiz
+ 402              	.LVL55:
+ 403 00b8 1FFA80F8 		uxth	r8, r0
+ 404              	.LVL56:
+  74:Core/Src/wifi.c **** 	uint16_t waterLevel_d = (uint16_t) waterLevel;
+ 405              		.loc 1 74 2 is_stmt 1 view .LVU88
+ 406              		.loc 1 74 11 is_stmt 0 view .LVU89
+ 407 00bc D7E90001 		ldrd	r0, [r7]
+ 408 00c0 FFF7FEFF 		bl	__aeabi_d2uiz
+ 409              	.LVL57:
+ 410 00c4 80B2     		uxth	r0, r0
+ 411              	.LVL58:
+  75:Core/Src/wifi.c **** 
+  76:Core/Src/wifi.c **** 
+  77:Core/Src/wifi.c **** 	sprintf(req, "GET %s?instant_temperature=%d&instant_moisture=%d&instant_humidity=%d&instant_water=
+ 412              		.loc 1 77 2 is_stmt 1 view .LVU90
+ 413 00c6 0396     		str	r6, [sp, #12]
+ 414              	.LVL59:
+ 415              		.loc 1 77 2 is_stmt 0 view .LVU91
+ 416 00c8 0290     		str	r0, [sp, #8]
+ 417 00ca CDF80480 		str	r8, [sp, #4]
+ 418 00ce 0095     		str	r5, [sp]
+ 419 00d0 2346     		mov	r3, r4
+ 420 00d2 5A46     		mov	r2, fp
+ 421 00d4 2649     		ldr	r1, .L23+12
+ 422 00d6 5046     		mov	r0, r10
+ 423              	.LVL60:
+ 424              		.loc 1 77 2 view .LVU92
+ 425 00d8 FFF7FEFF 		bl	sprintf
+ 426              	.LVL61:
+  78:Core/Src/wifi.c **** 			path, temp_d, moisture_d, humidity_d, waterLevel_d, hostname);
+  79:Core/Src/wifi.c **** 	char send_cmd[17];
+ 427              		.loc 1 79 2 is_stmt 1 view .LVU93
+  80:Core/Src/wifi.c **** 	sprintf(send_cmd, "AT+CIPSEND=%d\r\n", (uint16_t) strlen(req));
+ 428              		.loc 1 80 2 view .LVU94
+ 429              		.loc 1 80 52 is_stmt 0 view .LVU95
+ 430 00dc 5046     		mov	r0, r10
+ 431 00de FFF7FEFF 		bl	strlen
+ 432              	.LVL62:
+ 433              		.loc 1 80 2 view .LVU96
+ 434 00e2 82B2     		uxth	r2, r0
+ 435 00e4 2349     		ldr	r1, .L23+16
+ 436 00e6 07F11C00 		add	r0, r7, #28
+ 437 00ea FFF7FEFF 		bl	sprintf
+ 438              	.LVL63:
+  81:Core/Src/wifi.c **** 
+  82:Core/Src/wifi.c **** 	USART1_SendString(send_cmd, (uint16_t) strlen(send_cmd));
+ 439              		.loc 1 82 2 is_stmt 1 view .LVU97
+ 440              		.loc 1 82 41 is_stmt 0 view .LVU98
+ 441 00ee 07F11C00 		add	r0, r7, #28
+ 442 00f2 FFF7FEFF 		bl	strlen
+ 443              	.LVL64:
+ 444              		.loc 1 82 2 view .LVU99
+ 445 00f6 81B2     		uxth	r1, r0
+ARM GAS  /tmp/ccvAuu44.s 			page 11
+
+
+ 446 00f8 07F11C00 		add	r0, r7, #28
+ 447 00fc FFF7FEFF 		bl	USART1_SendString
+ 448              	.LVL65:
+  83:Core/Src/wifi.c **** 
+  84:Core/Src/wifi.c **** 	if (USART1_WaitFor("OK\r\n", "ERROR\r\n", 1000) == -1) {
+ 449              		.loc 1 84 2 is_stmt 1 view .LVU100
+ 450              		.loc 1 84 6 is_stmt 0 view .LVU101
+ 451 0100 4FF47A72 		mov	r2, #1000
+ 452 0104 1849     		ldr	r1, .L23+4
+ 453 0106 1948     		ldr	r0, .L23+8
+ 454 0108 FFF7FEFF 		bl	USART1_WaitFor
+ 455              	.LVL66:
+ 456 010c 0446     		mov	r4, r0
+ 457              	.LVL67:
+ 458              		.loc 1 84 5 view .LVU102
+ 459 010e B0F1FF3F 		cmp	r0, #-1
+ 460 0112 21D0     		beq	.L21
+  85:Core/Src/wifi.c **** 		USART1_ClearBuffer();
+  86:Core/Src/wifi.c **** 		return -1;
+  87:Core/Src/wifi.c **** 	}
+  88:Core/Src/wifi.c **** 	USART1_ClearBuffer();
+ 461              		.loc 1 88 2 is_stmt 1 view .LVU103
+ 462 0114 FFF7FEFF 		bl	USART1_ClearBuffer
+ 463              	.LVL68:
+  89:Core/Src/wifi.c **** 
+  90:Core/Src/wifi.c **** 	USART1_SendString(req, (uint16_t) strlen(req));
+ 464              		.loc 1 90 2 view .LVU104
+ 465              		.loc 1 90 36 is_stmt 0 view .LVU105
+ 466 0118 5046     		mov	r0, r10
+ 467 011a FFF7FEFF 		bl	strlen
+ 468              	.LVL69:
+ 469              		.loc 1 90 2 view .LVU106
+ 470 011e 81B2     		uxth	r1, r0
+ 471 0120 5046     		mov	r0, r10
+ 472 0122 FFF7FEFF 		bl	USART1_SendString
+ 473              	.LVL70:
+  91:Core/Src/wifi.c **** 
+  92:Core/Src/wifi.c **** 	if (USART1_WaitFor("OK\r\n", "ERROR\r\n", 1000) == -1) {
+ 474              		.loc 1 92 2 is_stmt 1 view .LVU107
+ 475              		.loc 1 92 6 is_stmt 0 view .LVU108
+ 476 0126 4FF47A72 		mov	r2, #1000
+ 477 012a 0F49     		ldr	r1, .L23+4
+ 478 012c 0F48     		ldr	r0, .L23+8
+ 479 012e FFF7FEFF 		bl	USART1_WaitFor
+ 480              	.LVL71:
+ 481 0132 0446     		mov	r4, r0
+ 482              		.loc 1 92 5 view .LVU109
+ 483 0134 B0F1FF3F 		cmp	r0, #-1
+ 484 0138 11D0     		beq	.L22
+  93:Core/Src/wifi.c **** 		USART1_ClearBuffer();
+  94:Core/Src/wifi.c **** 		return -1;
+  95:Core/Src/wifi.c **** 	}
+  96:Core/Src/wifi.c **** 	USART1_ClearBuffer();
+ 485              		.loc 1 96 2 is_stmt 1 view .LVU110
+ 486 013a FFF7FEFF 		bl	USART1_ClearBuffer
+ 487              	.LVL72:
+  97:Core/Src/wifi.c **** 
+ARM GAS  /tmp/ccvAuu44.s 			page 12
+
+
+  98:Core/Src/wifi.c **** 	int8_t ret = USART1_WaitForTrueOrFalse("ERROR\r\n", 10000);
+ 488              		.loc 1 98 2 view .LVU111
+ 489              		.loc 1 98 15 is_stmt 0 view .LVU112
+ 490 013e 42F21071 		movw	r1, #10000
+ 491 0142 0948     		ldr	r0, .L23+4
+ 492 0144 FFF7FEFF 		bl	USART1_WaitForTrueOrFalse
+ 493              	.LVL73:
+ 494 0148 0446     		mov	r4, r0
+ 495              	.LVL74:
+  99:Core/Src/wifi.c **** 	USART1_ClearBuffer();
+ 496              		.loc 1 99 2 is_stmt 1 view .LVU113
+ 497 014a FFF7FEFF 		bl	USART1_ClearBuffer
+ 498              	.LVL75:
+ 100:Core/Src/wifi.c **** 
+ 101:Core/Src/wifi.c **** 	return ret;
+ 499              		.loc 1 101 2 view .LVU114
+ 500              	.L14:
+ 102:Core/Src/wifi.c **** }
+ 501              		.loc 1 102 1 is_stmt 0 view .LVU115
+ 502 014e 2046     		mov	r0, r4
+ 503 0150 3437     		adds	r7, r7, #52
+ 504              	.LCFI7:
+ 505              		.cfi_remember_state
+ 506              		.cfi_def_cfa_offset 36
+ 507              		.loc 1 102 1 view .LVU116
+ 508 0152 BD46     		mov	sp, r7
+ 509              	.LCFI8:
+ 510              		.cfi_def_cfa_register 13
+ 511              		@ sp needed
+ 512 0154 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 513              	.LVL76:
+ 514              	.L21:
+ 515              	.LCFI9:
+ 516              		.cfi_restore_state
+  85:Core/Src/wifi.c **** 		return -1;
+ 517              		.loc 1 85 3 is_stmt 1 view .LVU117
+ 518 0158 FFF7FEFF 		bl	USART1_ClearBuffer
+ 519              	.LVL77:
+  86:Core/Src/wifi.c **** 	}
+ 520              		.loc 1 86 3 view .LVU118
+  86:Core/Src/wifi.c **** 	}
+ 521              		.loc 1 86 10 is_stmt 0 view .LVU119
+ 522 015c F7E7     		b	.L14
+ 523              	.L22:
+  93:Core/Src/wifi.c **** 		return -1;
+ 524              		.loc 1 93 3 is_stmt 1 view .LVU120
+ 525 015e FFF7FEFF 		bl	USART1_ClearBuffer
+ 526              	.LVL78:
+  94:Core/Src/wifi.c **** 	}
+ 527              		.loc 1 94 3 view .LVU121
+  94:Core/Src/wifi.c **** 	}
+ 528              		.loc 1 94 10 is_stmt 0 view .LVU122
+ 529 0162 F4E7     		b	.L14
+ 530              	.L24:
+ 531              		.align	2
+ 532              	.L23:
+ 533 0164 00000000 		.word	.LC6
+ARM GAS  /tmp/ccvAuu44.s 			page 13
+
+
+ 534 0168 08000000 		.word	.LC1
+ 535 016c 10000000 		.word	.LC2
+ 536 0170 1C000000 		.word	.LC7
+ 537 0174 8C000000 		.word	.LC8
+ 538              		.cfi_endproc
+ 539              	.LFE239:
+ 541              		.text
+ 542              	.Letext0:
+ 543              		.file 2 "/usr/lib/gcc/arm-none-eabi/9.2.1/include/stdint.h"
+ 544              		.file 3 "Drivers/CMSIS/Include/core_cm4.h"
+ 545              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 546              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f429xx.h"
+ 547              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 548              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 549              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 550              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 551              		.file 10 "Core/Inc/usart.h"
+ 552              		.file 11 "/usr/lib/gcc/arm-none-eabi/9.2.1/include/stddef.h"
+ 553              		.file 12 "/usr/include/newlib/sys/_types.h"
+ 554              		.file 13 "/usr/include/newlib/sys/reent.h"
+ 555              		.file 14 "/usr/include/newlib/sys/lock.h"
+ 556              		.file 15 "/usr/include/newlib/string.h"
+ 557              		.file 16 "/usr/include/newlib/stdio.h"
+ARM GAS  /tmp/ccvAuu44.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 wifi.c
+     /tmp/ccvAuu44.s:18     .rodata.WIFI_Init.str1.4:0000000000000000 $d
+     /tmp/ccvAuu44.s:37     .text.WIFI_Init:0000000000000000 $t
+     /tmp/ccvAuu44.s:45     .text.WIFI_Init:0000000000000000 WIFI_Init
+     /tmp/ccvAuu44.s:204    .text.WIFI_Init:00000000000000b4 $d
+     /tmp/ccvAuu44.s:214    .rodata.WIFI_SendRequestWithParams.str1.4:0000000000000000 $d
+     /tmp/ccvAuu44.s:227    .text.WIFI_SendRequestWithParams:0000000000000000 $t
+     /tmp/ccvAuu44.s:234    .text.WIFI_SendRequestWithParams:0000000000000000 WIFI_SendRequestWithParams
+     /tmp/ccvAuu44.s:533    .text.WIFI_SendRequestWithParams:0000000000000164 $d
+
+UNDEFINED SYMBOLS
+USART1_ClearBuffer
+USART1_SendString
+USART1_WaitFor
+strlen
+sprintf
+__aeabi_d2uiz
+USART1_WaitForTrueOrFalse

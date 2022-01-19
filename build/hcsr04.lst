@@ -1,0 +1,470 @@
+ARM GAS  /tmp/cc8vnkl4.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"hcsr04.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.delay,"ax",%progbits
+  18              		.align	1
+  19              		.global	delay
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	delay:
+  27              	.LVL0:
+  28              	.LFB235:
+  29              		.file 1 "Core/Src/hcsr04.c"
+   1:Core/Src/hcsr04.c **** 
+   2:Core/Src/hcsr04.c **** #include "hcsr04.h"
+   3:Core/Src/hcsr04.c **** #include "tim.h"
+   4:Core/Src/hcsr04.c **** 
+   5:Core/Src/hcsr04.c **** uint32_t IC_Val1 = 0;
+   6:Core/Src/hcsr04.c **** uint32_t IC_Val2 = 0;
+   7:Core/Src/hcsr04.c **** uint32_t Difference = 0;
+   8:Core/Src/hcsr04.c **** uint8_t Is_First_Captured = 0;
+   9:Core/Src/hcsr04.c **** uint8_t Distance  = 0;
+  10:Core/Src/hcsr04.c **** 
+  11:Core/Src/hcsr04.c **** void delay(uint16_t time){
+  30              		.loc 1 11 26 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  12:Core/Src/hcsr04.c **** 	__HAL_TIM_SET_COUNTER(&htim1, 0);
+  35              		.loc 1 12 2 view .LVU1
+  36 0000 034B     		ldr	r3, .L3
+  37 0002 1A68     		ldr	r2, [r3]
+  38 0004 0023     		movs	r3, #0
+  39 0006 5362     		str	r3, [r2, #36]
+  13:Core/Src/hcsr04.c **** 	while (__HAL_TIM_GET_COUNTER(&htim1) < time);
+  40              		.loc 1 13 2 view .LVU2
+  41              	.L2:
+  42              		.loc 1 13 46 discriminator 1 view .LVU3
+  43              		.loc 1 13 8 discriminator 1 view .LVU4
+  44              		.loc 1 13 9 is_stmt 0 discriminator 1 view .LVU5
+  45 0008 536A     		ldr	r3, [r2, #36]
+ARM GAS  /tmp/cc8vnkl4.s 			page 2
+
+
+  46              		.loc 1 13 8 discriminator 1 view .LVU6
+  47 000a 8342     		cmp	r3, r0
+  48 000c FCD3     		bcc	.L2
+  14:Core/Src/hcsr04.c **** }
+  49              		.loc 1 14 1 view .LVU7
+  50 000e 7047     		bx	lr
+  51              	.L4:
+  52              		.align	2
+  53              	.L3:
+  54 0010 00000000 		.word	htim1
+  55              		.cfi_endproc
+  56              	.LFE235:
+  58              		.global	__aeabi_ui2d
+  59              		.global	__aeabi_dmul
+  60              		.global	__aeabi_d2uiz
+  61              		.section	.text.HAL_TIM_IC_CaptureCallback,"ax",%progbits
+  62              		.align	1
+  63              		.global	HAL_TIM_IC_CaptureCallback
+  64              		.syntax unified
+  65              		.thumb
+  66              		.thumb_func
+  67              		.fpu fpv4-sp-d16
+  69              	HAL_TIM_IC_CaptureCallback:
+  70              	.LVL1:
+  71              	.LFB236:
+  15:Core/Src/hcsr04.c **** 
+  16:Core/Src/hcsr04.c **** void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
+  72              		.loc 1 16 57 is_stmt 1 view -0
+  73              		.cfi_startproc
+  74              		@ args = 0, pretend = 0, frame = 0
+  75              		@ frame_needed = 0, uses_anonymous_args = 0
+  17:Core/Src/hcsr04.c **** 	if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1)  // if the interrupt source is channel1
+  76              		.loc 1 17 2 view .LVU9
+  77              		.loc 1 17 10 is_stmt 0 view .LVU10
+  78 0000 037F     		ldrb	r3, [r0, #28]	@ zero_extendqisi2
+  79              		.loc 1 17 5 view .LVU11
+  80 0002 012B     		cmp	r3, #1
+  81 0004 00D0     		beq	.L14
+  82 0006 7047     		bx	lr
+  83              	.L14:
+  16:Core/Src/hcsr04.c **** 	if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1)  // if the interrupt source is channel1
+  84              		.loc 1 16 57 view .LVU12
+  85 0008 10B5     		push	{r4, lr}
+  86              	.LCFI0:
+  87              		.cfi_def_cfa_offset 8
+  88              		.cfi_offset 4, -8
+  89              		.cfi_offset 14, -4
+  90 000a 0446     		mov	r4, r0
+  18:Core/Src/hcsr04.c **** 	{
+  19:Core/Src/hcsr04.c **** 		if (Is_First_Captured==0) // if the first value is not captured
+  91              		.loc 1 19 3 is_stmt 1 view .LVU13
+  92              		.loc 1 19 24 is_stmt 0 view .LVU14
+  93 000c 2C4B     		ldr	r3, .L17+8
+  94 000e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  95              		.loc 1 19 6 view .LVU15
+  96 0010 13B1     		cbz	r3, .L15
+  20:Core/Src/hcsr04.c **** 		{
+ARM GAS  /tmp/cc8vnkl4.s 			page 3
+
+
+  21:Core/Src/hcsr04.c **** 			IC_Val1 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1); // read the first value
+  22:Core/Src/hcsr04.c **** 			Is_First_Captured = 1;  // set the first captured as true
+  23:Core/Src/hcsr04.c **** 			// change the polarity to falling edge
+  24:Core/Src/hcsr04.c **** 			__HAL_TIM_SET_CAPTUREPOLARITY(htim, TIM_CHANNEL_1, TIM_INPUTCHANNELPOLARITY_FALLING);
+  25:Core/Src/hcsr04.c **** 		}
+  26:Core/Src/hcsr04.c **** 
+  27:Core/Src/hcsr04.c **** 		else if (Is_First_Captured==1)   // if the first is already captured
+  97              		.loc 1 27 8 is_stmt 1 view .LVU16
+  98              		.loc 1 27 11 is_stmt 0 view .LVU17
+  99 0012 012B     		cmp	r3, #1
+ 100 0014 13D0     		beq	.L16
+ 101              	.LVL2:
+ 102              	.L5:
+  28:Core/Src/hcsr04.c **** 		{
+  29:Core/Src/hcsr04.c **** 			IC_Val2 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);  // read second value
+  30:Core/Src/hcsr04.c **** 			__HAL_TIM_SET_COUNTER(htim, 0);  // reset the counter
+  31:Core/Src/hcsr04.c **** 
+  32:Core/Src/hcsr04.c **** 			if (IC_Val2 > IC_Val1)
+  33:Core/Src/hcsr04.c **** 			{
+  34:Core/Src/hcsr04.c **** 				Difference = IC_Val2-IC_Val1;
+  35:Core/Src/hcsr04.c **** 			}
+  36:Core/Src/hcsr04.c **** 
+  37:Core/Src/hcsr04.c **** 			else if (IC_Val1 > IC_Val2)
+  38:Core/Src/hcsr04.c **** 			{
+  39:Core/Src/hcsr04.c **** 				Difference = (0xffff - IC_Val1) + IC_Val2;
+  40:Core/Src/hcsr04.c **** 			}
+  41:Core/Src/hcsr04.c **** 
+  42:Core/Src/hcsr04.c **** 			Distance = Difference * .034/2;
+  43:Core/Src/hcsr04.c **** 			Is_First_Captured = 0; // set it back to false
+  44:Core/Src/hcsr04.c **** 
+  45:Core/Src/hcsr04.c **** 			// set polarity to rising edge
+  46:Core/Src/hcsr04.c **** 			__HAL_TIM_SET_CAPTUREPOLARITY(htim, TIM_CHANNEL_1, TIM_INPUTCHANNELPOLARITY_RISING);
+  47:Core/Src/hcsr04.c **** 			__HAL_TIM_DISABLE_IT(&htim1, TIM_IT_CC1);
+  48:Core/Src/hcsr04.c **** 		}
+  49:Core/Src/hcsr04.c **** 	}
+  50:Core/Src/hcsr04.c **** }
+ 103              		.loc 1 50 1 view .LVU18
+ 104 0016 10BD     		pop	{r4, pc}
+ 105              	.LVL3:
+ 106              	.L15:
+  21:Core/Src/hcsr04.c **** 			Is_First_Captured = 1;  // set the first captured as true
+ 107              		.loc 1 21 4 is_stmt 1 view .LVU19
+  21:Core/Src/hcsr04.c **** 			Is_First_Captured = 1;  // set the first captured as true
+ 108              		.loc 1 21 14 is_stmt 0 view .LVU20
+ 109 0018 0021     		movs	r1, #0
+ 110 001a FFF7FEFF 		bl	HAL_TIM_ReadCapturedValue
+ 111              	.LVL4:
+  21:Core/Src/hcsr04.c **** 			Is_First_Captured = 1;  // set the first captured as true
+ 112              		.loc 1 21 12 view .LVU21
+ 113 001e 294B     		ldr	r3, .L17+12
+ 114 0020 1860     		str	r0, [r3]
+  22:Core/Src/hcsr04.c **** 			// change the polarity to falling edge
+ 115              		.loc 1 22 4 is_stmt 1 view .LVU22
+  22:Core/Src/hcsr04.c **** 			// change the polarity to falling edge
+ 116              		.loc 1 22 22 is_stmt 0 view .LVU23
+ 117 0022 274B     		ldr	r3, .L17+8
+ 118 0024 0122     		movs	r2, #1
+ARM GAS  /tmp/cc8vnkl4.s 			page 4
+
+
+ 119 0026 1A70     		strb	r2, [r3]
+  24:Core/Src/hcsr04.c **** 		}
+ 120              		.loc 1 24 4 is_stmt 1 view .LVU24
+  24:Core/Src/hcsr04.c **** 		}
+ 121              		.loc 1 24 4 view .LVU25
+ 122 0028 2268     		ldr	r2, [r4]
+ 123 002a 136A     		ldr	r3, [r2, #32]
+ 124 002c 23F00A03 		bic	r3, r3, #10
+ 125 0030 1362     		str	r3, [r2, #32]
+  24:Core/Src/hcsr04.c **** 		}
+ 126              		.loc 1 24 4 view .LVU26
+ 127 0032 2268     		ldr	r2, [r4]
+ 128 0034 136A     		ldr	r3, [r2, #32]
+ 129 0036 43F00203 		orr	r3, r3, #2
+ 130 003a 1362     		str	r3, [r2, #32]
+  24:Core/Src/hcsr04.c **** 		}
+ 131              		.loc 1 24 4 view .LVU27
+ 132 003c EBE7     		b	.L5
+ 133              	.LVL5:
+ 134              	.L16:
+  29:Core/Src/hcsr04.c **** 			__HAL_TIM_SET_COUNTER(htim, 0);  // reset the counter
+ 135              		.loc 1 29 4 view .LVU28
+  29:Core/Src/hcsr04.c **** 			__HAL_TIM_SET_COUNTER(htim, 0);  // reset the counter
+ 136              		.loc 1 29 14 is_stmt 0 view .LVU29
+ 137 003e 0021     		movs	r1, #0
+ 138 0040 FFF7FEFF 		bl	HAL_TIM_ReadCapturedValue
+ 139              	.LVL6:
+  29:Core/Src/hcsr04.c **** 			__HAL_TIM_SET_COUNTER(htim, 0);  // reset the counter
+ 140              		.loc 1 29 12 view .LVU30
+ 141 0044 204B     		ldr	r3, .L17+16
+ 142 0046 1860     		str	r0, [r3]
+  30:Core/Src/hcsr04.c **** 
+ 143              		.loc 1 30 4 is_stmt 1 view .LVU31
+ 144 0048 2368     		ldr	r3, [r4]
+ 145 004a 0022     		movs	r2, #0
+ 146 004c 5A62     		str	r2, [r3, #36]
+  32:Core/Src/hcsr04.c **** 			{
+ 147              		.loc 1 32 4 view .LVU32
+  32:Core/Src/hcsr04.c **** 			{
+ 148              		.loc 1 32 16 is_stmt 0 view .LVU33
+ 149 004e 1D4B     		ldr	r3, .L17+12
+ 150 0050 1B68     		ldr	r3, [r3]
+  32:Core/Src/hcsr04.c **** 			{
+ 151              		.loc 1 32 7 view .LVU34
+ 152 0052 9842     		cmp	r0, r3
+ 153 0054 25D9     		bls	.L8
+  34:Core/Src/hcsr04.c **** 			}
+ 154              		.loc 1 34 5 is_stmt 1 view .LVU35
+  34:Core/Src/hcsr04.c **** 			}
+ 155              		.loc 1 34 25 is_stmt 0 view .LVU36
+ 156 0056 C01A     		subs	r0, r0, r3
+  34:Core/Src/hcsr04.c **** 			}
+ 157              		.loc 1 34 16 view .LVU37
+ 158 0058 1C4B     		ldr	r3, .L17+20
+ 159 005a 1860     		str	r0, [r3]
+ 160              	.L9:
+  42:Core/Src/hcsr04.c **** 			Is_First_Captured = 0; // set it back to false
+ARM GAS  /tmp/cc8vnkl4.s 			page 5
+
+
+ 161              		.loc 1 42 4 is_stmt 1 view .LVU38
+  42:Core/Src/hcsr04.c **** 			Is_First_Captured = 0; // set it back to false
+ 162              		.loc 1 42 26 is_stmt 0 view .LVU39
+ 163 005c 1B4B     		ldr	r3, .L17+20
+ 164 005e 1868     		ldr	r0, [r3]
+ 165 0060 FFF7FEFF 		bl	__aeabi_ui2d
+ 166              	.LVL7:
+ 167 0064 14A3     		adr	r3, .L17
+ 168 0066 D3E90023 		ldrd	r2, [r3]
+ 169 006a FFF7FEFF 		bl	__aeabi_dmul
+ 170              	.LVL8:
+  42:Core/Src/hcsr04.c **** 			Is_First_Captured = 0; // set it back to false
+ 171              		.loc 1 42 32 view .LVU40
+ 172 006e 0022     		movs	r2, #0
+ 173 0070 174B     		ldr	r3, .L17+24
+ 174 0072 FFF7FEFF 		bl	__aeabi_dmul
+ 175              	.LVL9:
+  42:Core/Src/hcsr04.c **** 			Is_First_Captured = 0; // set it back to false
+ 176              		.loc 1 42 13 view .LVU41
+ 177 0076 FFF7FEFF 		bl	__aeabi_d2uiz
+ 178              	.LVL10:
+ 179 007a 164B     		ldr	r3, .L17+28
+ 180 007c 1870     		strb	r0, [r3]
+  43:Core/Src/hcsr04.c **** 
+ 181              		.loc 1 43 4 is_stmt 1 view .LVU42
+  43:Core/Src/hcsr04.c **** 
+ 182              		.loc 1 43 22 is_stmt 0 view .LVU43
+ 183 007e 104B     		ldr	r3, .L17+8
+ 184 0080 0022     		movs	r2, #0
+ 185 0082 1A70     		strb	r2, [r3]
+  46:Core/Src/hcsr04.c **** 			__HAL_TIM_DISABLE_IT(&htim1, TIM_IT_CC1);
+ 186              		.loc 1 46 4 is_stmt 1 view .LVU44
+  46:Core/Src/hcsr04.c **** 			__HAL_TIM_DISABLE_IT(&htim1, TIM_IT_CC1);
+ 187              		.loc 1 46 4 view .LVU45
+ 188 0084 2268     		ldr	r2, [r4]
+ 189 0086 136A     		ldr	r3, [r2, #32]
+ 190 0088 23F00A03 		bic	r3, r3, #10
+ 191 008c 1362     		str	r3, [r2, #32]
+  46:Core/Src/hcsr04.c **** 			__HAL_TIM_DISABLE_IT(&htim1, TIM_IT_CC1);
+ 192              		.loc 1 46 4 view .LVU46
+ 193 008e 2368     		ldr	r3, [r4]
+ 194 0090 1A6A     		ldr	r2, [r3, #32]
+ 195 0092 1A62     		str	r2, [r3, #32]
+  46:Core/Src/hcsr04.c **** 			__HAL_TIM_DISABLE_IT(&htim1, TIM_IT_CC1);
+ 196              		.loc 1 46 4 view .LVU47
+  47:Core/Src/hcsr04.c **** 		}
+ 197              		.loc 1 47 4 view .LVU48
+ 198 0094 104B     		ldr	r3, .L17+32
+ 199 0096 1A68     		ldr	r2, [r3]
+ 200 0098 D368     		ldr	r3, [r2, #12]
+ 201 009a 23F00203 		bic	r3, r3, #2
+ 202 009e D360     		str	r3, [r2, #12]
+ 203              		.loc 1 50 1 is_stmt 0 view .LVU49
+ 204 00a0 B9E7     		b	.L5
+ 205              	.L8:
+  37:Core/Src/hcsr04.c **** 			{
+ 206              		.loc 1 37 9 is_stmt 1 view .LVU50
+ARM GAS  /tmp/cc8vnkl4.s 			page 6
+
+
+  37:Core/Src/hcsr04.c **** 			{
+ 207              		.loc 1 37 12 is_stmt 0 view .LVU51
+ 208 00a2 9842     		cmp	r0, r3
+ 209 00a4 DAD2     		bcs	.L9
+  39:Core/Src/hcsr04.c **** 			}
+ 210              		.loc 1 39 5 is_stmt 1 view .LVU52
+  39:Core/Src/hcsr04.c **** 			}
+ 211              		.loc 1 39 37 is_stmt 0 view .LVU53
+ 212 00a6 C31A     		subs	r3, r0, r3
+ 213 00a8 03F57F43 		add	r3, r3, #65280
+ 214 00ac FF33     		adds	r3, r3, #255
+  39:Core/Src/hcsr04.c **** 			}
+ 215              		.loc 1 39 16 view .LVU54
+ 216 00ae 074A     		ldr	r2, .L17+20
+ 217 00b0 1360     		str	r3, [r2]
+ 218 00b2 D3E7     		b	.L9
+ 219              	.L18:
+ 220 00b4 AFF30080 		.align	3
+ 221              	.L17:
+ 222 00b8 9CC420B0 		.word	2954937500
+ 223 00bc 7268A13F 		.word	1067542642
+ 224 00c0 00000000 		.word	.LANCHOR0
+ 225 00c4 00000000 		.word	.LANCHOR1
+ 226 00c8 00000000 		.word	.LANCHOR2
+ 227 00cc 00000000 		.word	.LANCHOR3
+ 228 00d0 0000E03F 		.word	1071644672
+ 229 00d4 00000000 		.word	.LANCHOR4
+ 230 00d8 00000000 		.word	htim1
+ 231              		.cfi_endproc
+ 232              	.LFE236:
+ 234              		.section	.text.HCSR04_Read,"ax",%progbits
+ 235              		.align	1
+ 236              		.global	HCSR04_Read
+ 237              		.syntax unified
+ 238              		.thumb
+ 239              		.thumb_func
+ 240              		.fpu fpv4-sp-d16
+ 242              	HCSR04_Read:
+ 243              	.LFB237:
+  51:Core/Src/hcsr04.c **** 
+  52:Core/Src/hcsr04.c **** void HCSR04_Read (void){
+ 244              		.loc 1 52 24 is_stmt 1 view -0
+ 245              		.cfi_startproc
+ 246              		@ args = 0, pretend = 0, frame = 0
+ 247              		@ frame_needed = 0, uses_anonymous_args = 0
+ 248 0000 10B5     		push	{r4, lr}
+ 249              	.LCFI1:
+ 250              		.cfi_def_cfa_offset 8
+ 251              		.cfi_offset 4, -8
+ 252              		.cfi_offset 14, -4
+  53:Core/Src/hcsr04.c **** 	HAL_GPIO_WritePin(TRIG_PORT, TRIG_PIN, GPIO_PIN_SET);  // pull the TRIG pin high
+ 253              		.loc 1 53 2 view .LVU56
+ 254 0002 0B4C     		ldr	r4, .L21
+ 255 0004 0122     		movs	r2, #1
+ 256 0006 4FF48071 		mov	r1, #256
+ 257 000a 2046     		mov	r0, r4
+ 258 000c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ARM GAS  /tmp/cc8vnkl4.s 			page 7
+
+
+ 259              	.LVL11:
+  54:Core/Src/hcsr04.c **** 	delay(10);  // wait for 10 us
+ 260              		.loc 1 54 2 view .LVU57
+ 261 0010 0A20     		movs	r0, #10
+ 262 0012 FFF7FEFF 		bl	delay
+ 263              	.LVL12:
+  55:Core/Src/hcsr04.c **** 	HAL_GPIO_WritePin(TRIG_PORT, TRIG_PIN, GPIO_PIN_RESET);  // pull the TRIG pin low
+ 264              		.loc 1 55 2 view .LVU58
+ 265 0016 0022     		movs	r2, #0
+ 266 0018 4FF48071 		mov	r1, #256
+ 267 001c 2046     		mov	r0, r4
+ 268 001e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 269              	.LVL13:
+  56:Core/Src/hcsr04.c **** 
+  57:Core/Src/hcsr04.c **** 	__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC1);
+ 270              		.loc 1 57 2 view .LVU59
+ 271 0022 044B     		ldr	r3, .L21+4
+ 272 0024 1A68     		ldr	r2, [r3]
+ 273 0026 D368     		ldr	r3, [r2, #12]
+ 274 0028 43F00203 		orr	r3, r3, #2
+ 275 002c D360     		str	r3, [r2, #12]
+  58:Core/Src/hcsr04.c **** }
+ 276              		.loc 1 58 1 is_stmt 0 view .LVU60
+ 277 002e 10BD     		pop	{r4, pc}
+ 278              	.L22:
+ 279              		.align	2
+ 280              	.L21:
+ 281 0030 00100240 		.word	1073876992
+ 282 0034 00000000 		.word	htim1
+ 283              		.cfi_endproc
+ 284              	.LFE237:
+ 286              		.global	Distance
+ 287              		.global	Is_First_Captured
+ 288              		.global	Difference
+ 289              		.global	IC_Val2
+ 290              		.global	IC_Val1
+ 291              		.section	.bss.Difference,"aw",%nobits
+ 292              		.align	2
+ 293              		.set	.LANCHOR3,. + 0
+ 296              	Difference:
+ 297 0000 00000000 		.space	4
+ 298              		.section	.bss.Distance,"aw",%nobits
+ 299              		.set	.LANCHOR4,. + 0
+ 302              	Distance:
+ 303 0000 00       		.space	1
+ 304              		.section	.bss.IC_Val1,"aw",%nobits
+ 305              		.align	2
+ 306              		.set	.LANCHOR1,. + 0
+ 309              	IC_Val1:
+ 310 0000 00000000 		.space	4
+ 311              		.section	.bss.IC_Val2,"aw",%nobits
+ 312              		.align	2
+ 313              		.set	.LANCHOR2,. + 0
+ 316              	IC_Val2:
+ 317 0000 00000000 		.space	4
+ 318              		.section	.bss.Is_First_Captured,"aw",%nobits
+ 319              		.set	.LANCHOR0,. + 0
+ARM GAS  /tmp/cc8vnkl4.s 			page 8
+
+
+ 322              	Is_First_Captured:
+ 323 0000 00       		.space	1
+ 324              		.text
+ 325              	.Letext0:
+ 326              		.file 2 "/usr/lib/gcc/arm-none-eabi/9.2.1/include/stdint.h"
+ 327              		.file 3 "Drivers/CMSIS/Include/core_cm4.h"
+ 328              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 329              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f429xx.h"
+ 330              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 331              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 332              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 333              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+ 334              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 335              		.file 11 "Core/Inc/hcsr04.h"
+ 336              		.file 12 "Core/Inc/tim.h"
+ARM GAS  /tmp/cc8vnkl4.s 			page 9
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 hcsr04.c
+     /tmp/cc8vnkl4.s:18     .text.delay:0000000000000000 $t
+     /tmp/cc8vnkl4.s:26     .text.delay:0000000000000000 delay
+     /tmp/cc8vnkl4.s:54     .text.delay:0000000000000010 $d
+     /tmp/cc8vnkl4.s:62     .text.HAL_TIM_IC_CaptureCallback:0000000000000000 $t
+     /tmp/cc8vnkl4.s:69     .text.HAL_TIM_IC_CaptureCallback:0000000000000000 HAL_TIM_IC_CaptureCallback
+     /tmp/cc8vnkl4.s:222    .text.HAL_TIM_IC_CaptureCallback:00000000000000b8 $d
+     /tmp/cc8vnkl4.s:235    .text.HCSR04_Read:0000000000000000 $t
+     /tmp/cc8vnkl4.s:242    .text.HCSR04_Read:0000000000000000 HCSR04_Read
+     /tmp/cc8vnkl4.s:281    .text.HCSR04_Read:0000000000000030 $d
+     /tmp/cc8vnkl4.s:302    .bss.Distance:0000000000000000 Distance
+     /tmp/cc8vnkl4.s:322    .bss.Is_First_Captured:0000000000000000 Is_First_Captured
+     /tmp/cc8vnkl4.s:296    .bss.Difference:0000000000000000 Difference
+     /tmp/cc8vnkl4.s:316    .bss.IC_Val2:0000000000000000 IC_Val2
+     /tmp/cc8vnkl4.s:309    .bss.IC_Val1:0000000000000000 IC_Val1
+     /tmp/cc8vnkl4.s:292    .bss.Difference:0000000000000000 $d
+     /tmp/cc8vnkl4.s:303    .bss.Distance:0000000000000000 $d
+     /tmp/cc8vnkl4.s:305    .bss.IC_Val1:0000000000000000 $d
+     /tmp/cc8vnkl4.s:312    .bss.IC_Val2:0000000000000000 $d
+     /tmp/cc8vnkl4.s:323    .bss.Is_First_Captured:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+htim1
+__aeabi_ui2d
+__aeabi_dmul
+__aeabi_d2uiz
+HAL_TIM_ReadCapturedValue
+HAL_GPIO_WritePin

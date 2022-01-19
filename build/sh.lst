@@ -1,0 +1,280 @@
+ARM GAS  /tmp/ccw2mZyu.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"sh.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.SH_init,"ax",%progbits
+  18              		.align	1
+  19              		.global	SH_init
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	SH_init:
+  27              	.LVL0:
+  28              	.LFB235:
+  29              		.file 1 "Core/Src/sh.c"
+   1:Core/Src/sh.c **** /*
+   2:Core/Src/sh.c ****  * sh.c
+   3:Core/Src/sh.c ****  *
+   4:Core/Src/sh.c ****  *  Created on: Jan 5, 2022
+   5:Core/Src/sh.c ****  *      Author: gugu
+   6:Core/Src/sh.c ****  */
+   7:Core/Src/sh.c **** 
+   8:Core/Src/sh.c **** /*
+   9:Core/Src/sh.c ****  * INCLUDES
+  10:Core/Src/sh.c ****  */
+  11:Core/Src/sh.c **** #include "sh.h"
+  12:Core/Src/sh.c **** 
+  13:Core/Src/sh.c **** /*
+  14:Core/Src/sh.c ****  * DEFINES
+  15:Core/Src/sh.c ****  */
+  16:Core/Src/sh.c **** #define DRY_SOIL	3455
+  17:Core/Src/sh.c **** #define WET_SOIL	1366
+  18:Core/Src/sh.c **** 
+  19:Core/Src/sh.c **** /*
+  20:Core/Src/sh.c ****  * INITIALISATION
+  21:Core/Src/sh.c ****  */
+  22:Core/Src/sh.c **** void SH_init(SH *dev, ADC_HandleTypeDef *ADC_handle) {
+  30              		.loc 1 22 54 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  23:Core/Src/sh.c **** 	dev->ADC_handle = ADC_handle;
+  35              		.loc 1 23 2 view .LVU1
+ARM GAS  /tmp/ccw2mZyu.s 			page 2
+
+
+  36              		.loc 1 23 18 is_stmt 0 view .LVU2
+  37 0000 0160     		str	r1, [r0]
+  24:Core/Src/sh.c **** }
+  38              		.loc 1 24 1 view .LVU3
+  39 0002 7047     		bx	lr
+  40              		.cfi_endproc
+  41              	.LFE235:
+  43              		.global	__aeabi_ui2d
+  44              		.global	__aeabi_dsub
+  45              		.global	__aeabi_dmul
+  46              		.section	.text.SH_ReadData,"ax",%progbits
+  47              		.align	1
+  48              		.global	SH_ReadData
+  49              		.syntax unified
+  50              		.thumb
+  51              		.thumb_func
+  52              		.fpu fpv4-sp-d16
+  54              	SH_ReadData:
+  55              	.LVL1:
+  56              	.LFB236:
+  25:Core/Src/sh.c **** 
+  26:Core/Src/sh.c **** /*
+  27:Core/Src/sh.c ****  * DATA ACQUISITION
+  28:Core/Src/sh.c ****  */
+  29:Core/Src/sh.c **** uint8_t SH_ReadData(SH *dev) {
+  57              		.loc 1 29 30 is_stmt 1 view -0
+  58              		.cfi_startproc
+  59              		@ args = 0, pretend = 0, frame = 0
+  60              		@ frame_needed = 0, uses_anonymous_args = 0
+  61              		.loc 1 29 30 is_stmt 0 view .LVU5
+  62 0000 70B5     		push	{r4, r5, r6, lr}
+  63              	.LCFI0:
+  64              		.cfi_def_cfa_offset 16
+  65              		.cfi_offset 4, -16
+  66              		.cfi_offset 5, -12
+  67              		.cfi_offset 6, -8
+  68              		.cfi_offset 14, -4
+  69 0002 0446     		mov	r4, r0
+  30:Core/Src/sh.c **** 	uint8_t errNum = 0;
+  70              		.loc 1 30 2 is_stmt 1 view .LVU6
+  71              	.LVL2:
+  31:Core/Src/sh.c **** 	HAL_StatusTypeDef status;
+  72              		.loc 1 31 2 view .LVU7
+  32:Core/Src/sh.c **** 
+  33:Core/Src/sh.c **** 	status = HAL_ADC_Start(dev->ADC_handle);
+  73              		.loc 1 33 2 view .LVU8
+  74              		.loc 1 33 11 is_stmt 0 view .LVU9
+  75 0004 0068     		ldr	r0, [r0]
+  76              	.LVL3:
+  77              		.loc 1 33 11 view .LVU10
+  78 0006 FFF7FEFF 		bl	HAL_ADC_Start
+  79              	.LVL4:
+  34:Core/Src/sh.c **** 	errNum += (status != HAL_OK);
+  80              		.loc 1 34 2 is_stmt 1 view .LVU11
+  81              		.loc 1 34 20 is_stmt 0 view .LVU12
+  82 000a 051E     		subs	r5, r0, #0
+  83 000c 18BF     		it	ne
+ARM GAS  /tmp/ccw2mZyu.s 			page 3
+
+
+  84 000e 0125     		movne	r5, #1
+  85              	.LVL5:
+  35:Core/Src/sh.c **** 
+  36:Core/Src/sh.c **** 	status = HAL_ADC_PollForConversion(dev->ADC_handle, HAL_MAX_DELAY);
+  86              		.loc 1 36 2 is_stmt 1 view .LVU13
+  87              		.loc 1 36 11 is_stmt 0 view .LVU14
+  88 0010 4FF0FF31 		mov	r1, #-1
+  89 0014 2068     		ldr	r0, [r4]
+  90              	.LVL6:
+  91              		.loc 1 36 11 view .LVU15
+  92 0016 FFF7FEFF 		bl	HAL_ADC_PollForConversion
+  93              	.LVL7:
+  37:Core/Src/sh.c **** 	errNum += (status != HAL_OK);
+  94              		.loc 1 37 2 is_stmt 1 view .LVU16
+  95              		.loc 1 37 20 is_stmt 0 view .LVU17
+  96 001a 061E     		subs	r6, r0, #0
+  97 001c 18BF     		it	ne
+  98 001e 0126     		movne	r6, #1
+  99              		.loc 1 37 9 view .LVU18
+ 100 0020 3544     		add	r5, r5, r6
+ 101              	.LVL8:
+  38:Core/Src/sh.c **** 
+  39:Core/Src/sh.c **** 	dev->ADC_data = HAL_ADC_GetValue(dev->ADC_handle);
+ 102              		.loc 1 39 2 is_stmt 1 view .LVU19
+ 103              		.loc 1 39 18 is_stmt 0 view .LVU20
+ 104 0022 2068     		ldr	r0, [r4]
+ 105              	.LVL9:
+ 106              		.loc 1 39 18 view .LVU21
+ 107 0024 FFF7FEFF 		bl	HAL_ADC_GetValue
+ 108              	.LVL10:
+ 109              		.loc 1 39 16 view .LVU22
+ 110 0028 6060     		str	r0, [r4, #4]
+  40:Core/Src/sh.c **** 	HAL_ADC_Stop(dev->ADC_handle);
+ 111              		.loc 1 40 2 is_stmt 1 view .LVU23
+ 112 002a 2068     		ldr	r0, [r4]
+ 113 002c FFF7FEFF 		bl	HAL_ADC_Stop
+ 114              	.LVL11:
+  41:Core/Src/sh.c **** 	errNum += (status != HAL_OK);
+ 115              		.loc 1 41 2 view .LVU24
+ 116              		.loc 1 41 9 is_stmt 0 view .LVU25
+ 117 0030 3544     		add	r5, r5, r6
+ 118              	.LVL12:
+  42:Core/Src/sh.c **** 
+  43:Core/Src/sh.c **** 	if (dev->ADC_data >= DRY_SOIL) {
+ 119              		.loc 1 43 2 is_stmt 1 view .LVU26
+ 120              		.loc 1 43 9 is_stmt 0 view .LVU27
+ 121 0032 6068     		ldr	r0, [r4, #4]
+ 122              		.loc 1 43 5 view .LVU28
+ 123 0034 40F67E53 		movw	r3, #3454
+ 124 0038 9842     		cmp	r0, r3
+ 125 003a 05D9     		bls	.L3
+  44:Core/Src/sh.c **** 		dev->soilHumidity = 0.0;
+ 126              		.loc 1 44 3 is_stmt 1 view .LVU29
+ 127              		.loc 1 44 21 is_stmt 0 view .LVU30
+ 128 003c 0022     		movs	r2, #0
+ 129 003e 0023     		movs	r3, #0
+ 130 0040 C4E90223 		strd	r2, [r4, #8]
+ARM GAS  /tmp/ccw2mZyu.s 			page 4
+
+
+ 131              	.L4:
+  45:Core/Src/sh.c **** 	} else if (dev->ADC_data <= WET_SOIL) {
+  46:Core/Src/sh.c **** 		dev->soilHumidity = 100.0;
+  47:Core/Src/sh.c **** 	} else {
+  48:Core/Src/sh.c **** 		dev->soilHumidity = ((100.0)/((double) WET_SOIL - (double) DRY_SOIL))*((double) (dev->ADC_data) -
+  49:Core/Src/sh.c **** 	}
+  50:Core/Src/sh.c **** 
+  51:Core/Src/sh.c **** 	return errNum;
+ 132              		.loc 1 51 2 is_stmt 1 view .LVU31
+  52:Core/Src/sh.c **** }
+ 133              		.loc 1 52 1 is_stmt 0 view .LVU32
+ 134 0044 2846     		mov	r0, r5
+ 135 0046 70BD     		pop	{r4, r5, r6, pc}
+ 136              	.LVL13:
+ 137              	.L3:
+  45:Core/Src/sh.c **** 	} else if (dev->ADC_data <= WET_SOIL) {
+ 138              		.loc 1 45 9 is_stmt 1 view .LVU33
+  45:Core/Src/sh.c **** 	} else if (dev->ADC_data <= WET_SOIL) {
+ 139              		.loc 1 45 12 is_stmt 0 view .LVU34
+ 140 0048 40F25653 		movw	r3, #1366
+ 141 004c 9842     		cmp	r0, r3
+ 142 004e 04D8     		bhi	.L5
+  46:Core/Src/sh.c **** 	} else {
+ 143              		.loc 1 46 3 is_stmt 1 view .LVU35
+  46:Core/Src/sh.c **** 	} else {
+ 144              		.loc 1 46 21 is_stmt 0 view .LVU36
+ 145 0050 0022     		movs	r2, #0
+ 146 0052 0D4B     		ldr	r3, .L7+16
+ 147 0054 C4E90223 		strd	r2, [r4, #8]
+ 148 0058 F4E7     		b	.L4
+ 149              	.L5:
+  48:Core/Src/sh.c **** 	}
+ 150              		.loc 1 48 3 is_stmt 1 view .LVU37
+  48:Core/Src/sh.c **** 	}
+ 151              		.loc 1 48 74 is_stmt 0 view .LVU38
+ 152 005a FFF7FEFF 		bl	__aeabi_ui2d
+ 153              	.LVL14:
+  48:Core/Src/sh.c **** 	}
+ 154              		.loc 1 48 99 view .LVU39
+ 155 005e 06A3     		adr	r3, .L7
+ 156 0060 D3E90023 		ldrd	r2, [r3]
+ 157 0064 FFF7FEFF 		bl	__aeabi_dsub
+ 158              	.LVL15:
+  48:Core/Src/sh.c **** 	}
+ 159              		.loc 1 48 72 view .LVU40
+ 160 0068 05A3     		adr	r3, .L7+8
+ 161 006a D3E90023 		ldrd	r2, [r3]
+ 162 006e FFF7FEFF 		bl	__aeabi_dmul
+ 163              	.LVL16:
+  48:Core/Src/sh.c **** 	}
+ 164              		.loc 1 48 21 view .LVU41
+ 165 0072 C4E90201 		strd	r0, [r4, #8]
+ 166 0076 E5E7     		b	.L4
+ 167              	.L8:
+ 168              		.align	3
+ 169              	.L7:
+ 170 0078 00000000 		.word	0
+ARM GAS  /tmp/ccw2mZyu.s 			page 5
+
+
+ 171 007c 00FEAA40 		.word	1084947968
+ 172 0080 1E13C4C0 		.word	3234075422
+ 173 0084 6382A8BF 		.word	-1079475613
+ 174 0088 00005940 		.word	1079574528
+ 175              		.cfi_endproc
+ 176              	.LFE236:
+ 178              		.text
+ 179              	.Letext0:
+ 180              		.file 2 "/usr/lib/gcc/arm-none-eabi/9.2.1/include/stdint.h"
+ 181              		.file 3 "Drivers/CMSIS/Include/core_cm4.h"
+ 182              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 183              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f429xx.h"
+ 184              		.file 6 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
+ 185              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 186              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 187              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h"
+ 188              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 189              		.file 11 "Core/Inc/sh.h"
+ARM GAS  /tmp/ccw2mZyu.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 sh.c
+     /tmp/ccw2mZyu.s:18     .text.SH_init:0000000000000000 $t
+     /tmp/ccw2mZyu.s:26     .text.SH_init:0000000000000000 SH_init
+     /tmp/ccw2mZyu.s:47     .text.SH_ReadData:0000000000000000 $t
+     /tmp/ccw2mZyu.s:54     .text.SH_ReadData:0000000000000000 SH_ReadData
+     /tmp/ccw2mZyu.s:170    .text.SH_ReadData:0000000000000078 $d
+
+UNDEFINED SYMBOLS
+__aeabi_ui2d
+__aeabi_dsub
+__aeabi_dmul
+HAL_ADC_Start
+HAL_ADC_PollForConversion
+HAL_ADC_GetValue
+HAL_ADC_Stop
