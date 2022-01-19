@@ -160,14 +160,15 @@ int main(void)
   		  while(1);
   	  }
 
-  	  //HCSR04_Read();
+  	  HCSR04_Read();
 
+      // ne brisati timer jer ce hsr04 mozda poslati staru vrijednost
   	  HAL_GPIO_WritePin(GPIOG,GPIO_PIN_13,GPIO_PIN_SET);
   	  HAL_Delay(5000);
   	  HAL_GPIO_WritePin(GPIOG,GPIO_PIN_13,GPIO_PIN_RESET);
 	  HAL_Delay(500);
 
-  	  int8_t val = WIFI_SendRequestWithParams("ekantica.herokuapp.com", "/data",(double) senzor_zrak.temp, (double) senzor_zrak.hum, (double)senzor_tlo.soilHumidity, (double) 12);
+  	  int8_t val = WIFI_SendRequestWithParams("ekantica.herokuapp.com", "/data",(double) senzor_zrak.temp, (double) senzor_zrak.hum, (double)senzor_tlo.soilHumidity, (double) Distance);
 
   	  if(val == 0)
   	  {
